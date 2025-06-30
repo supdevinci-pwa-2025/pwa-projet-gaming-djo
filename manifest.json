@@ -11,14 +11,8 @@
   "lang": "fr",
   "id": "/index.html",
   "dir": "ltr",
-  "display_override": [
-    "standalone",
-    "browser"
-  ],
-  "categories": [
-    "productivity",
-    "gaming"
-  ],
+  "display_override": ["standalone", "browser"],
+  "categories": ["productivity", "gaming"],
   "launch_handler": {
     "client_mode": "auto"
   },
@@ -46,6 +40,14 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/index.html",
+      "accept": {
+        "text/plain": [".csv"]
+      }
     }
   ]
 }
