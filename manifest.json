@@ -6,12 +6,12 @@
   "display": "standalone",
   "scope": "/",
   "theme_color": "#3367D6",
-  "description": "Jeu de gamin Djo",
+  "description": "Jeu de gaming Djo",
   "orientation": "any",
   "lang": "fr",
   "id": "/index.html",
   "dir": "ltr",
-  "diplay_override": ["standalone", "browser"],
+  "display_override": ["standalone", "browser"],
   "categories": ["productivity", "gaming"],
   "launch_handler": {
     "client_mode": "auto"
