@@ -44,7 +44,7 @@
   ],
   "file_handlers": [
     {
-      "action": "/index.html",
+      "action": "/open.html",
       "accept": {
         "text/plain": [".csv"]
       }
