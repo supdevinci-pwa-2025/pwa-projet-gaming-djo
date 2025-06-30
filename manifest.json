@@ -1,0 +1,16 @@
+{
+  "name": "Djo",
+  "short_name": "Djo",
+  "start_url": "index.html",
+  "background_color": "#3367D6",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#3367D6",
+  "description": "Jeu de gamin Djo",
+  "orientation": "any",
+  "lang": "fr",
+  "id": "/index.html",
+  "dir": "ltr",
+  "diplay_override": ["standalone", "browser"],
+  "categories": ["productivity", "gaming"]
+}
