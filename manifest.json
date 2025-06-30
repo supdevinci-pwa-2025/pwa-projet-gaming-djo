@@ -12,5 +12,8 @@
   "id": "/index.html",
   "dir": "ltr",
   "diplay_override": ["standalone", "browser"],
-  "categories": ["productivity", "gaming"]
+  "categories": ["productivity", "gaming"],
+  "launch_handler": {
+    "client_mode": "auto"
+  }
 }
