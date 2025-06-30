@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎮 Tournoi Gaming</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>🎮 Tournoi Gaming</h1>
+
+    <section id="formSection">
+      <h2>Ajouter un participant</h2>
+      <input type="text" id="personName" placeholder="Nom" />
+      <select id="personRole">
+        <option>En attente</option>
+        <option>Qualifié</option>
+        <option>Éliminé</option>
+      </select>
+      <button onclick="addPerson()">Ajouter ✏️</button>
+    </section>
+
+    <section id="stats">
+      <p>
+        👥 Total : <span id="total">0</span> • 🎯 En attente :
+        <span id="en attente">0</span> • 🏆 Qualifié :
+        <span id="qualifié">0</span> • ❌ Éliminé : <span id="éliminé">0</span>
+      </p>
+    </section>
+
+    <section id="peopleList"></section>
+
+    <script src="app.js"></script>
+  </body>
+</html>
