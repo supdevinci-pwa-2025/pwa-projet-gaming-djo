@@ -59,3 +59,18 @@ function removePerson(index) {
 }
 
 displayPeople();
+
+// Étapes pour le BACKGROUND SYNC
+// Enregistrer une tâche de synchronisation depuis la page (app.js)
+// Après avoir enregistré ton service worker, tu peux dire :
+
+// « Dès que possible, déclenche un background sync avec le tag sync-snacks ».
+
+// Code à trous (dans app.js)
+
+navigator.serviceWorker.ready.then((reg) => {
+  reg.sync
+    .register("sync-snacks") // indice: méthode pour enregistrer une sync
+    .then(() => console.log("📡 Sync enregistrée"))
+    .catch((err) => console.error("❌ Erreur sync:", err));
+});
