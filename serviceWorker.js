@@ -52,6 +52,15 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("fetch", (event) => {
   console.log("🛰 Fetch:", event.request.url);
 
+  const request = event.request;
+  const url = event.url;
+
+  console.log("🛰 Interception Fetch:", request.method, url.pathname);
+
+  // if(request.method === "POST" && url.pathname.includes('api/snack')) {
+  //   event.respondWith
+  // }
+
   event.respondWith(
     // indice: permet de renvoyer une réponse custom
     caches
