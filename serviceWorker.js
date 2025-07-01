@@ -1,3 +1,5 @@
+import { syncParticipants } from "./app";
+
 // Écouter l'installation du SW
 self.addEventListener("install", function (event) {
   console.log("Service Worker installé");

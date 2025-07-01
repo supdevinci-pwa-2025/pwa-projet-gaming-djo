@@ -76,7 +76,7 @@ navigator.serviceWorker.ready.then((reg) => {
     .catch((err) => console.error("❌ Erreur sync:", err));
 });
 
-async function syncParticipants() {
+export async function syncParticipants() {
   console.log(" Début de la synchronisation...");
 
   // 1️⃣ Lire la liste des participants en attente
