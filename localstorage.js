@@ -37,17 +37,16 @@ self.addEventListener("activate", function (event) {
 
 self.addEventListener("fetch", function (event) {
   event.respondWith(
-    caches
-      .match(event.request)
-      .then(function (response) {
-        // Si trouvé dans le cache, on renvoie la version en cache
-        if (response) {
-          return response;
-        }
+    caches.match(event.request).then(function (response) {
+      // Si trouvé dans le cache, on renvoie la version en cache
+      if (response) {
+        return response;
+      }
 
-        // Sinon, on va le chercher sur le réseau
-        return fetch(event.request).then(function (networkResponse) {
-          // Vérifie qu'on a une réponse valide
+      // Sinon, on tente le réseau
+      return fetch(event.request)
+        .then(function (networkResponse) {
+          // Vérifie que la réponse est correcte
           if (
             !networkResponse ||
             networkResponse.status !== 200 ||
@@ -56,19 +55,34 @@ self.addEventListener("fetch", function (event) {
             return networkResponse;
           }
 
-          // Clone la réponse car elle est un flux qui ne peut être consommé qu'une fois
+          // Clone la réponse
           const responseToCache = networkResponse.clone();
 
-          caches.open("my-site-cache-v1").then(function (cache) {
+          // Met en cache la ressource
+          caches.open(staticCacheName).then(function (cache) {
             cache.put(event.request, responseToCache);
           });
 
           return networkResponse;
+        })
+        .catch(function (error) {
+          console.error("Fetch failed; returning offline fallback:", error);
+
+          // Ici tu peux retourner une page HTML de secours si c'est une requête navigation
+          if (event.request.mode === "navigate") {
+            return caches.match("/offline.html");
+          }
+
+          // Sinon, on peut retourner rien (ça provoque une erreur dans le navigateur)
+          return new Response(
+            "Vous êtes hors ligne et la ressource n'est pas en cache.",
+            {
+              status: 503,
+              statusText: "Service Unavailable",
+              headers: new Headers({ "Content-Type": "text/plain" }),
+            }
+          );
         });
-      })
-      .catch(function (error) {
-        console.error("Fetch failed:", error);
-        // Tu peux retourner ici une page d'erreur ou rien
-      })
+    })
   );
 });
