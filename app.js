@@ -1,6 +1,6 @@
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("/sw.js")
+    .register("/serviceWorker.js")
     .then((reg) => {
       // registration worked
       console.log("Enregistrement réussi");
