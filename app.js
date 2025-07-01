@@ -69,6 +69,7 @@ displayPeople();
 // Code à trous (dans app.js)
 
 navigator.serviceWorker.ready.then((reg) => {
+  console.log("YEP");
   reg.sync
     .register("sync-snacks") // indice: méthode pour enregistrer une sync
     .then(() => console.log("📡 Sync enregistrée"))
