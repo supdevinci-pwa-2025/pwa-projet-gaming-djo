@@ -62,5 +62,33 @@
         }
       ]
     }
-  }
+  },
+  "shortcuts": [
+    {
+      "name": "Ajouter un snack",
+      "short_name": "Ajout snack",
+      "description": "Accéder rapidement à l'ajout de snack",
+      "url": "/index.html",
+      "icons": [
+        {
+          "src": "/assets/manifest-icon-192.maskable.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Page random",
+      "short_name": "Page random",
+      "description": "Une page qui est random",
+      "url": "/random.html",
+      "icons": [
+        {
+          "src": "/assets/manifest-icon-192.maskable.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
 }
