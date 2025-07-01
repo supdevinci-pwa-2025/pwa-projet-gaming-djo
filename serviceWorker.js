@@ -67,7 +67,7 @@ async function syncParticipants() {
   console.log(" Début de la synchronisation...");
 
   // 1️⃣ Lire la liste des participants en attente
-  const pending = await displayPeople(); // indice: fonction qui lit IndexedDB
+  const pending = await indexedDB.open("sync-participants", 1); // indice: fonction qui lit IndexedDB
   console.log(`${pending.length} participant(s) à synchroniser`);
 
   let success = 0;
