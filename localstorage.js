@@ -6,4 +6,7 @@ const assets = [
   "./open.html",
   "./share.html",
   "./style.css",
+  "./app.js",
+  "./serviceWorker.js",
+  "./netlify/functions/share.js",
 ];
