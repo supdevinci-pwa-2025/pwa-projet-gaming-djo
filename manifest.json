@@ -65,9 +65,9 @@
   },
   "shortcuts": [
     {
-      "name": "Ajouter un snack",
-      "short_name": "Ajout snack",
-      "description": "Accéder rapidement à l'ajout de snack",
+      "name": "Page de tournoi",
+      "short_name": "Tournoi Gaming",
+      "description": "Aller à la page du tournoi",
       "url": "/index.html",
       "icons": [
         {
