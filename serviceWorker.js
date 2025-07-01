@@ -10,6 +10,18 @@ self.addEventListener("activate", function (event) {
   self.clients.claim(); // Prendre le contrôle des pages ouvertes
 });
 
+function getAllPending() {
+  return openDB().then((db) => {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("pending-science", "readonly");
+      const store = tx.objectStore("pending-science");
+      const req = store.getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  });
+}
+
 const staticCacheName = "my-gaming-site-cache-v1";
 const assets = [
   "./",
@@ -67,7 +79,7 @@ async function syncParticipants() {
   console.log(" Début de la synchronisation...");
 
   // 1️⃣ Lire la liste des participants en attente
-  const pending = await indexedDB.open("sync-participants", 1); // indice: fonction qui lit IndexedDB
+  const pending = await getAllPendingParticipants(); // indice: fonction qui lit IndexedDB
   console.log(pending);
   console.log(`${pending.length} participant(s) à synchroniser`);
 
@@ -79,7 +91,7 @@ async function syncParticipants() {
     try {
       console.log(`🚀 Envoi de ${participant.name}`); // indice: propriété du participant à afficher
 
-      const response = await fetch("/api/participants", {
+      const response = await fetch("/api/sync-participants", {
         // indice: URL de votre API
         method: "POST",
         headers: {
