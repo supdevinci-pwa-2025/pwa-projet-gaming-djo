@@ -24,17 +24,12 @@ self.addEventListener("install", function (event) {
 });
 
 self.addEventListener("activate", function (event) {
-  var cacheWhitelist = [staticCacheName];
+  const cacheWhitelist = [staticCacheName];
 
   event.waitUntil(
-    // Check de toutes les clés de cache.
-    caches.keys().then(function (cacheNames) {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map(function (cacheName) {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
+        keys.filter((k) => k !== staticCacheName).map((k) => caches.delete(k))
       );
     })
   );
