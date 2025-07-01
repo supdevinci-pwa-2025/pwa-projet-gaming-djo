@@ -161,12 +161,12 @@ async function syncParticipants() {
     let success = 0,
       fail = 0;
     // Tableau pour garder les snacks qui n'ont pas pu être synchronisés, avec détail de l'erreur
-    const failedSnacks = [];
+    const failedParticipants = [];
 
     // 3️⃣ Boucle asynchrone pour traiter chaque snack un par un
-    for (const snack of pending) {
+    for (const participant of pending) {
       try {
-        console.log("🚀 Tentative de synchro pour :", snack.name);
+        console.log("🚀 Tentative de synchro pour :", participant.name);
 
         // Récupération de l'URL de l'API via une fonction dédiée pour gérer différents environnements (local, prod...)
         const apiUrl = getApiUrl();
@@ -184,8 +184,8 @@ async function syncParticipants() {
           },
           body: JSON.stringify({
             // Conversion des données JavaScript en chaîne JSON
-            name: snack.name, // Propriété 'name' du snack
-            mood: snack.mood, // Propriété 'mood' du snack (ex: humeur)
+            name: participant.name, // Propriété 'name' du snack
+            role: participant.role, // Propriété 'mood' du snack (ex: humeur)
             timestamp: snack.timestamp, // Date/heure de création ou modification
           }),
         });
@@ -199,15 +199,15 @@ async function syncParticipants() {
 
         if (response.ok) {
           // Si le serveur répond avec un code HTTP 2xx (succès), on considère la synchro réussie
-          console.log("✅ Snack synchronisé :", snack.name);
+          console.log("✅ Snack synchronisé :", participant.name);
 
           // Suppression du snack de IndexedDB pour éviter les doublons à l'avenir
           // deletePendingSnack() est une fonction asynchrone qui supprime par identifiant
-          await deletePendingSnack(snack.id);
+          await deletePendingSnack(participant.id);
 
           // Notification aux autres onglets/pages que ce snack a été synchronisé
           // Utile pour mettre à jour l'affichage en temps réel dans plusieurs fenêtres
-          await notifyClients("snack-synced", { snack });
+          await notifyClients("snack-synced", { participant });
 
           success++; // Incrémentation du compteur de succès
         } else {
@@ -219,13 +219,13 @@ async function syncParticipants() {
 
           // Log détaillé de l'erreur serveur
           console.error(
-            `❌ Erreur serveur ${response.status} pour : ${snack.name}`,
+            `❌ Erreur serveur ${response.status} pour : ${participant.name}`,
             errorText
           );
 
           // On ajoute ce snack à la liste des snacks ayant échoué la synchro, avec le message d'erreur
-          failedSnacks.push({
-            snack: snack.name,
+          failedParticipants.push({
+            snack: participant.name,
             error: `${response.status}: ${errorText}`,
           });
 
@@ -233,10 +233,16 @@ async function syncParticipants() {
         }
       } catch (err) {
         // Gestion des erreurs liées au réseau (ex: pas d'accès Internet, timeout)
-        console.error(`❌ Erreur réseau pour : ${snack.name}`, err.message);
+        console.error(
+          `❌ Erreur réseau pour : ${participant.name}`,
+          err.message
+        );
 
         // On garde aussi trace de ces erreurs dans le tableau des échecs
-        failedSnacks.push({ snack: snack.name, error: err.message });
+        failedParticipants.push({
+          participant: participant.name,
+          error: err.message,
+        });
 
         fail++; // Incrémentation du compteur d'échecs
       }
@@ -246,8 +252,8 @@ async function syncParticipants() {
     console.log(`📈 Sync terminée : ${success} succès / ${fail} échecs`);
 
     // Si certains snacks n'ont pas pu être synchronisés, on affiche la liste avec erreurs
-    if (failedSnacks.length > 0) {
-      console.log("❌ Snacks échoués:", failedSnacks);
+    if (failedParticipants.length > 0) {
+      console.log("❌ Snacks échoués:", failedParticipants);
     }
 
     // Notification générale aux autres onglets/pages que la synchronisation est terminée
@@ -255,7 +261,7 @@ async function syncParticipants() {
     await notifyClients("sync-completed", {
       success,
       errors: fail,
-      failedSnacks: failedSnacks,
+      failedParticipants: failedParticipants,
     });
   } catch (e) {
     // Gestion d'erreurs globales pouvant survenir dans tout le bloc try (ex: erreur IndexedDB)
