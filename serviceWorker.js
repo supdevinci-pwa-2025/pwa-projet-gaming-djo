@@ -18,7 +18,7 @@ self.addEventListener("install", function (event) {
 
 // <!-- Écouter l'activation du SW -->
 self.addEventListener("activate", function (event) {
-  var cacheWhitelist = [CACHE_NAME];
+  // var cacheWhitelist = [CACHE_NAME];
 
   // indice: quand le SW devient actif
   console.log(" Service Worker activé");
