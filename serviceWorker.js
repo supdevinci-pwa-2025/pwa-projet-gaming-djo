@@ -55,12 +55,8 @@ self.addEventListener("fetch", (event) => {
 
   // Toujours construire un objet URL depuis request.url
   let url;
-  try {
-    url = new URL(request.url);
-  } catch (err) {
-    console.error("Erreur lors du parsing URL:", err);
-    return;
-  }
+
+  url = new URL(request.url);
 
   console.log("🛰 Interception Fetch:", request.method, url.pathname);
 
