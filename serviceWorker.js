@@ -153,7 +153,7 @@ async function syncParticipants() {
 
     // Si aucun snack à synchroniser, on sort directement de la fonction (pas besoin de faire plus)
     if (pending.length === 0) {
-      console.log("✅ Aucun snack en attente");
+      console.log("✅ Aucun participant en attente");
       return; // Fin de la fonction ici
     }
 
