@@ -98,3 +98,55 @@ self.addEventListener("sync", (event) => {
 // Sync déclenchée pour: sync-snacks
 // Début de la synchronisation...
 // Tentative de synchro pour : ...
+
+async function syncParticipants() {
+  console.log(" Début de la synchronisation...");
+
+  // 1️⃣ Lire la liste des participants en attente
+  const pending = await document.getElementById("peopleList"); // indice: fonction qui lit IndexedDB
+  console.log(`${pending.length} participant(s) à synchroniser`);
+
+  let success = 0;
+  let fail = 0;
+
+  // 2️⃣ Boucle principale
+  for (const participant of pending) {
+    try {
+      console.log(`🚀 Envoi de ${participant.name}`); // indice: propriété du participant à afficher
+
+      const response = await fetch("/api/participants", {
+        // indice: URL de votre API
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: participant.name, // indice: nom du participant
+          email: participant.role, // indice: email ou autre champ
+          timestamp: participant.timestamp, // indice: date ou identifiant temporel
+        }),
+      });
+
+      if (response.ok) {
+        console.log(`✅ Participant synchronisé : ${participant.name}`);
+
+        await removePerson(participant.id); // indice: supprime de IndexedDB
+        await postMessage("participant-synced", { participant }); // indice: notifie les clients
+        success++;
+      } else {
+        console.error(
+          `❌ Erreur serveur ${response.status} pour ${participant.name}`
+        );
+        fail++;
+      }
+    } catch (err) {
+      console.error(
+        `❌ Erreur réseau pour ${participant.name}: ${err.message}`
+      );
+      fail++;
+    }
+  }
+
+  // 3️⃣ Bilan final
+  console.log(` ${success} participants synchronisés, ❌ ${fail} échecs`);
+}
