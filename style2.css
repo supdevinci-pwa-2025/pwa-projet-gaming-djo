@@ -11,7 +11,7 @@ body {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
     min-height: 100vh;
     color: #2d3748;
-    padding: 0;
+    padding: 20px;
     overflow-x: hidden;
     position: relative;
 }
@@ -31,20 +31,9 @@ body::before {
     z-index: -1;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Header avec animation */
-.header {
+/* Header */
+h1 {
     text-align: center;
-    margin-bottom: 40px;
-    position: relative;
-}
-
-.header h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 800;
     background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcf7f, #4d9de0);
@@ -54,7 +43,7 @@ body::before {
     background-clip: text;
     animation: gradientShift 3s ease-in-out infinite;
     text-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin-bottom: 10px;
+    margin-bottom: 40px;
 }
 
 @keyframes gradientShift {
@@ -62,14 +51,8 @@ body::before {
     50% { background-position: 100% 50%; }
 }
 
-.header p {
-    color: #6b7280;
-    font-size: 1.2rem;
-    font-weight: 400;
-}
-
-/* Cards avec glassmorphism */
-.card {
+/* Form Section */
+#formSection {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.8);
@@ -80,17 +63,12 @@ body::before {
     transition: all 0.3s ease;
 }
 
-.card:hover {
+#formSection:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
 }
 
-/* Form section */
-.form-section {
-    position: relative;
-}
-
-.form-section h2 {
+#formSection h2 {
     color: #374151;
     font-size: 1.8rem;
     font-weight: 700;
@@ -100,31 +78,61 @@ body::before {
     gap: 12px;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr auto;
-    gap: 16px;
-    align-items: end;
+#formSection h2::before {
+    content: '✨';
+    font-size: 1.5rem;
 }
 
-@media (max-width: 768px) {
-    .form-grid {
-        grid-template-columns: 1fr;
+/* Form Layout */
+#formSection {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+#formSection > * {
+    grid-column: 1;
+}
+
+#formSection h2 {
+    margin-bottom: 0;
+}
+
+/* Form Grid for inputs */
+#formSection input,
+#formSection select,
+#formSection button {
+    margin: 8px 0;
+}
+
+@media (min-width: 768px) {
+    #formSection {
+        grid-template-columns: 2fr 1fr auto;
+        grid-template-areas:
+      "title title title"
+      "input select button";
+        align-items: end;
+    }
+
+    #formSection h2 {
+        grid-area: title;
+        margin-bottom: 24px;
+    }
+
+    #formSection input {
+        grid-area: input;
+    }
+
+    #formSection select {
+        grid-area: select;
+    }
+
+    #formSection button {
+        grid-area: button;
     }
 }
 
-.input-group {
-    position: relative;
-}
-
-.input-group label {
-    display: block;
-    color: #4b5563;
-    font-weight: 500;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-}
-
+/* Input Styles */
 input, select {
     width: 100%;
     padding: 16px 20px;
@@ -155,7 +163,8 @@ select option {
     color: #374151;
 }
 
-.btn-primary {
+/* Button Styles */
+button {
     padding: 16px 32px;
     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     border: none;
@@ -170,71 +179,86 @@ select option {
     overflow: hidden;
 }
 
-.btn-primary:hover {
+button:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
 }
 
-.btn-primary:active {
+button:active {
     transform: translateY(-1px);
 }
 
-/* Stats section */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 32px;
-}
-
-.stat-card {
+/* Stats Section */
+#stats {
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
     border-radius: 20px;
     padding: 24px;
-    text-align: center;
+    margin-bottom: 32px;
     border: 1px solid rgba(255, 255, 255, 0.8);
     transition: all 0.3s ease;
 }
 
-.stat-card:hover {
+#stats:hover {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.75);
 }
 
-.stat-icon {
-    font-size: 2.5rem;
-    margin-bottom: 12px;
-    display: block;
-}
-
-.stat-number {
-    font-size: 2.2rem;
-    font-weight: 800;
+#stats p {
+    font-size: 1.1rem;
+    font-weight: 600;
     color: #374151;
+    text-align: center;
+    line-height: 1.6;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+#stats span {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    font-size: 1.3em;
+}
+
+@media (max-width: 768px) {
+    #stats p {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+/* People List */
+#peopleList {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+#peopleList::before {
+    content: '🎯 Liste des participants';
     display: block;
-    margin-bottom: 8px;
-}
-
-.stat-label {
-    color: #6b7280;
-    font-weight: 500;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-}
-
-/* People list */
-.people-section h2 {
     color: #374151;
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
 }
 
+#peopleList:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Person Card */
 .person {
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
@@ -248,6 +272,7 @@ select option {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    animation: slideIn 0.5s ease-out;
 }
 
 .person::before {
@@ -257,25 +282,26 @@ select option {
     top: 0;
     bottom: 0;
     width: 4px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     border-radius: 2px;
 }
-
-.person.en-attente::before { background: #f59e0b; }
-.person.qualifié::before { background: #10b981; }
-.person.éliminé::before { background: #ef4444; }
 
 .person:hover {
     transform: translateX(8px);
     background: rgba(255, 255, 255, 0.8);
 }
 
-.person-info {
+.person span {
+    color: #374151;
+    font-weight: 600;
+    font-size: 1.1rem;
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-.person-avatar {
+.person span::before {
+    content: '';
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -286,43 +312,10 @@ select option {
     font-weight: 700;
     color: white;
     font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
-.person-details h3 {
-    color: #374151;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 4px;
-}
-
-.person-status {
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.person-status.en-attente {
-    background: rgba(245, 158, 11, 0.15);
-    color: #92400e;
-    border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.person-status.qualifié {
-    background: rgba(16, 185, 129, 0.15);
-    color: #065f46;
-    border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.person-status.éliminé {
-    background: rgba(239, 68, 68, 0.15);
-    color: #991b1b;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.btn-delete {
+.person button {
     background: rgba(239, 68, 68, 0.15);
     border: 1px solid rgba(239, 68, 68, 0.3);
     color: #dc2626;
@@ -330,33 +323,30 @@ select option {
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    min-width: auto;
+    width: auto;
 }
 
-.btn-delete:hover {
+.person button:hover {
     background: rgba(239, 68, 68, 0.25);
     transform: scale(1.1);
+    box-shadow: none;
 }
 
-.empty-state {
+/* Empty State */
+#peopleList:empty::after {
+    content: '🎮 Aucun participant pour le moment\AAAjoutez votre premier joueur pour commencer le tournoi !';
+    white-space: pre-line;
+    display: block;
     text-align: center;
     padding: 60px 20px;
     color: #6b7280;
+    font-size: 1.2rem;
+    line-height: 1.6;
 }
 
-.empty-state .icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    opacity: 0.5;
-}
-
-.empty-state h3 {
-    font-size: 1.5rem;
-    margin-bottom: 12px;
-    color: #374151;
-}
-
-/* Animations d'entrée */
+/* Animations */
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -368,37 +358,25 @@ select option {
     }
 }
 
-.person {
-    animation: slideIn 0.5s ease-out;
-}
-
-/* Responsive design */
+/* Responsive Design */
 @media (max-width: 768px) {
-    .container {
+    body {
         padding: 16px;
     }
 
-    .card {
+    #formSection,
+    #peopleList {
         padding: 24px;
-    }
-
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
     }
 
     .person {
         flex-direction: column;
         align-items: stretch;
         gap: 16px;
+        text-align: center;
     }
 
-    .person-info {
+    .person span {
         justify-content: center;
-    }
-
-    .person-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
 }
