@@ -8,12 +8,12 @@ self.addEventListener("install", function (event) {
   self.skipWaiting(); // indice: forcer à prendre le contrôle immédiatement
 
   // Perform install steps
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
-      console.log("Opened cache");
-      return cache.addAll(urlsToCache);
-    })
-  );
+  // event.waitUntil(
+  //   caches.open(CACHE_NAME).then(function (cache) {
+  //     console.log("Opened cache");
+  //     return cache.addAll(urlsToCache);
+  //   })
+  // );
 });
 
 // <!-- Écouter l'activation du SW -->
@@ -24,16 +24,16 @@ self.addEventListener("activate", function (event) {
   console.log(" Service Worker activé");
   self.clients.claim(); // indice: prendre le contrôle des pages ouvertes
 
-  event.waitUntil(
-    // Check de toutes les clés de cache.
-    caches.keys().then(function (cacheNames) {
-      return Promise.all(
-        cacheNames.map(function (cacheName) {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
+  // event.waitUntil(
+  //   // Check de toutes les clés de cache.
+  //   caches.keys().then(function (cacheNames) {
+  //     return Promise.all(
+  //       cacheNames.map(function (cacheName) {
+  //         if (cacheWhitelist.indexOf(cacheName) === -1) {
+  //           return caches.delete(cacheName);
+  //         }
+  //       })
+  //     );
+  //   })
+  // );
 });
