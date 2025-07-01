@@ -95,59 +95,6 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(caches.match(request).then((res) => res || fetch(request)));
 });
 
-async function syncParticipants() {
-  console.log(" Début de la synchronisation...");
-
-  // 1️⃣ Lire la liste des participants en attente
-  const pending = await getAllPending(); // indice: fonction qui lit IndexedDB
-  console.log(pending);
-  console.log(`${pending.length} participant(s) à synchroniser`);
-
-  let success = 0;
-  let fail = 0;
-
-  // 2️⃣ Boucle principale
-  for (const participant of pending) {
-    try {
-      console.log(`🚀 Envoi de ${participant.name}`); // indice: propriété du participant à afficher
-
-      const response = await fetch("/api/sync-participants", {
-        // indice: URL de votre API
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: participant.name, // indice: nom du participant
-          email: participant.email, // indice: email ou autre champ
-          timestamp: participant.timestamp, // indice: date ou identifiant temporel
-        }),
-      });
-
-      if (response.ok) {
-        console.log(`✅ Participant synchronisé : ${participant.name}`);
-
-        await removePerson(participant.id); // indice: supprime de IndexedDB
-        await postMessage("participant-synced", { participant }); // indice: notifie les clients
-        success++;
-      } else {
-        console.error(
-          `❌ Erreur serveur ${response.status} pour ${participant.name}`
-        );
-        fail++;
-      }
-    } catch (err) {
-      console.error(
-        `❌ Erreur réseau pour ${participant.name}: ${err.message}`
-      );
-      fail++;
-    }
-  }
-
-  // 3️⃣ Bilan final
-  console.log(` ${success} participants synchronisés, ❌ ${fail} échecs`);
-}
-
 // Écouter cet événement dans le SW (serviceWorker.js)
 // Ton service worker sera réveillé même si la page est fermée, et fera la sync.
 
@@ -160,7 +107,7 @@ self.addEventListener("sync", (event) => {
     event.waitUntil(syncParticipants()); // indice: dire "attends la fin de cette promesse"
   }
 });
-//  La fonction syncSnacks qui lit IndexedDB et envoie au serveur
+//  La fonction syncParticipants qui lit IndexedDB et envoie au serveur
 // Déjà écrite dans ton code :
 
 // elle utilise getAllPending() pour récupérer les snacks,
@@ -183,3 +130,170 @@ self.addEventListener("sync", (event) => {
 // Sync déclenchée pour: sync-snacks
 // Début de la synchronisation...
 // Tentative de synchro pour : ...
+
+/**
+ * Fonction asynchrone de synchronisation des snacks
+ * Cette fonction :
+ * - récupère tous les snacks stockés localement (dans IndexedDB) qui n'ont pas encore été envoyés au serveur,
+ * - les envoie un par un via une requête HTTP POST en JSON à une API serveur,
+ * - supprime localement les snacks qui ont bien été reçus par le serveur,
+ * - notifie les autres onglets/pages ouvertes du succès ou des erreurs,
+ * - affiche un rapport de la synchronisation à la fin,
+ * - gère proprement les erreurs réseau et serveur.
+ */
+async function syncParticipants() {
+  // Log dans la console pour indiquer le début de la synchronisation
+  console.log("🔄 Début de la synchronisation...");
+
+  try {
+    // 1️⃣ Récupération des snacks en attente dans IndexedDB (base locale du navigateur)
+    // getAllPending() est une fonction asynchrone qui retourne un tableau de snacks non synchronisés
+    const pending = await getAllPending();
+    console.log(`📊 ${pending.length} participants(s) à synchroniser`);
+
+    // Si aucun snack à synchroniser, on sort directement de la fonction (pas besoin de faire plus)
+    if (pending.length === 0) {
+      console.log("✅ Aucun snack en attente");
+      return; // Fin de la fonction ici
+    }
+
+    // 2️⃣ Initialisation de compteurs pour suivre succès/échecs
+    let success = 0,
+      fail = 0;
+    // Tableau pour garder les snacks qui n'ont pas pu être synchronisés, avec détail de l'erreur
+    const failedSnacks = [];
+
+    // 3️⃣ Boucle asynchrone pour traiter chaque snack un par un
+    for (const snack of pending) {
+      try {
+        console.log("🚀 Tentative de synchro pour :", snack.name);
+
+        // Récupération de l'URL de l'API via une fonction dédiée pour gérer différents environnements (local, prod...)
+        const apiUrl = getApiUrl();
+        console.log("🌐 URL API utilisée:", apiUrl);
+
+        // Envoi de la requête HTTP POST vers l'API
+        // fetch() est une API JavaScript moderne pour faire des requêtes HTTP asynchrones
+        // Ici on envoie les données au format JSON (headers et body)
+        const response = await fetch(apiUrl, {
+          method: "POST", // Méthode HTTP POST pour envoyer des données
+          headers: {
+            // En-têtes HTTP pour indiquer le type de contenu
+            "Content-Type": "application/json", // Le corps de la requête est en JSON
+            Accept: "application/json", // On attend une réponse en JSON
+          },
+          body: JSON.stringify({
+            // Conversion des données JavaScript en chaîne JSON
+            name: snack.name, // Propriété 'name' du snack
+            mood: snack.mood, // Propriété 'mood' du snack (ex: humeur)
+            timestamp: snack.timestamp, // Date/heure de création ou modification
+          }),
+        });
+
+        // Log du statut HTTP reçu : status est un entier (ex: 200), statusText est une description (ex: OK)
+        console.log(
+          "📊 Réponse serveur:",
+          response.status,
+          response.statusText
+        );
+
+        if (response.ok) {
+          // Si le serveur répond avec un code HTTP 2xx (succès), on considère la synchro réussie
+          console.log("✅ Snack synchronisé :", snack.name);
+
+          // Suppression du snack de IndexedDB pour éviter les doublons à l'avenir
+          // deletePendingSnack() est une fonction asynchrone qui supprime par identifiant
+          await deletePendingSnack(snack.id);
+
+          // Notification aux autres onglets/pages que ce snack a été synchronisé
+          // Utile pour mettre à jour l'affichage en temps réel dans plusieurs fenêtres
+          await notifyClients("snack-synced", { snack });
+
+          success++; // Incrémentation du compteur de succès
+        } else {
+          // Si la réponse HTTP est autre que 2xx (ex: erreur 404, 500)
+          // On tente de lire le corps de la réponse pour récupérer un message d'erreur
+          const errorText = await response
+            .text()
+            .catch(() => "Erreur inconnue");
+
+          // Log détaillé de l'erreur serveur
+          console.error(
+            `❌ Erreur serveur ${response.status} pour : ${snack.name}`,
+            errorText
+          );
+
+          // On ajoute ce snack à la liste des snacks ayant échoué la synchro, avec le message d'erreur
+          failedSnacks.push({
+            snack: snack.name,
+            error: `${response.status}: ${errorText}`,
+          });
+
+          fail++; // Incrémentation du compteur d'échecs
+        }
+      } catch (err) {
+        // Gestion des erreurs liées au réseau (ex: pas d'accès Internet, timeout)
+        console.error(`❌ Erreur réseau pour : ${snack.name}`, err.message);
+
+        // On garde aussi trace de ces erreurs dans le tableau des échecs
+        failedSnacks.push({ snack: snack.name, error: err.message });
+
+        fail++; // Incrémentation du compteur d'échecs
+      }
+    }
+
+    // 4️⃣ Après traitement de tous les snacks, on affiche un bilan clair
+    console.log(`📈 Sync terminée : ${success} succès / ${fail} échecs`);
+
+    // Si certains snacks n'ont pas pu être synchronisés, on affiche la liste avec erreurs
+    if (failedSnacks.length > 0) {
+      console.log("❌ Snacks échoués:", failedSnacks);
+    }
+
+    // Notification générale aux autres onglets/pages que la synchronisation est terminée
+    // On transmet le nombre de succès, d'erreurs, et les détails des échecs
+    await notifyClients("sync-completed", {
+      success,
+      errors: fail,
+      failedSnacks: failedSnacks,
+    });
+  } catch (e) {
+    // Gestion d'erreurs globales pouvant survenir dans tout le bloc try (ex: erreur IndexedDB)
+    console.error("💥 Erreur globale dans syncParticipants :", e);
+
+    // Notification des autres onglets/pages qu'il y a eu une erreur globale
+    await notifyClients("sync-error", { error: e.message });
+
+    // Relance de l'erreur pour que le code qui a appelé syncParticipants puisse aussi la gérer
+    throw e;
+  }
+}
+
+/**
+ * Fonction utilitaire pour déterminer dynamiquement l'URL de l'API en fonction de l'environnement
+ * ----------------------------------------------------------------------------------------------
+ * Utilise l'objet URL et self.location.href pour récupérer l'URL complète de la page courante
+ * Puis analyse le hostname pour retourner :
+ * - une URL locale pour localhost/127.0.0.1,
+ * - une URL adaptée pour Netlify (fonctions serverless),
+ * - une URL de production par défaut.
+ */
+function getApiUrl() {
+  // Création d'un objet URL pour analyser proprement l'URL courante
+  const currentUrl = new URL(self.location.href);
+  // Si on est en local (dev sur machine locale)
+  if (
+    currentUrl.hostname === "localhost" ||
+    currentUrl.hostname === "127.0.0.1"
+  ) {
+    // Retourne l'URL locale pour l'API, sur le même port que le front-end
+    return `${currentUrl.origin}/api/gaming`;
+  }
+  // Si on est déployé sur Netlify (URL contenant "netlify.app")
+  if (currentUrl.hostname.includes("netlify.app")) {
+    // Retourne l'URL de la fonction serverless hébergée sur Netlify
+    return `${currentUrl.origin}/.netlify/functions/gaming`;
+  }
+  // Sinon on retourne une URL de production fixe (exemple : site Netlify principal)
+  return "https://gmaing.netlify.app/.netlify/functions/gaming";
+}
