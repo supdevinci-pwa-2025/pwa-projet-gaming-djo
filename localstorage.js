@@ -35,40 +35,40 @@ self.addEventListener("activate", function (event) {
   );
 });
 
-self.addEventListener("fetch", function (event) {
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then(function (response) {
-        // Si trouvé dans le cache, on renvoie la version en cache
-        if (response) {
-          return response;
-        }
+// self.addEventListener("fetch", function (event) {
+//   event.respondWith(
+//     caches
+//       .match(event.request)
+//       .then(function (response) {
+//         // Si trouvé dans le cache, on renvoie la version en cache
+//         if (response) {
+//           return response;
+//         }
 
-        // Sinon, on va le chercher sur le réseau
-        return fetch(event.request).then(function (networkResponse) {
-          // Vérifie qu'on a une réponse valide
-          if (
-            !networkResponse ||
-            networkResponse.status !== 200 ||
-            networkResponse.type !== "basic"
-          ) {
-            return networkResponse;
-          }
+//         // Sinon, on va le chercher sur le réseau
+//         return fetch(event.request).then(function (networkResponse) {
+//           // Vérifie qu'on a une réponse valide
+//           if (
+//             !networkResponse ||
+//             networkResponse.status !== 200 ||
+//             networkResponse.type !== "basic"
+//           ) {
+//             return networkResponse;
+//           }
 
-          // Clone la réponse car elle est un flux qui ne peut être consommé qu'une fois
-          const responseToCache = networkResponse.clone();
+//           // Clone la réponse car elle est un flux qui ne peut être consommé qu'une fois
+//           const responseToCache = networkResponse.clone();
 
-          caches.open("my-site-cache-v1").then(function (cache) {
-            cache.put(event.request, responseToCache);
-          });
+//           caches.open("my-site-cache-v1").then(function (cache) {
+//             cache.put(event.request, responseToCache);
+//           });
 
-          return networkResponse;
-        });
-      })
-      .catch(function (error) {
-        console.error("Fetch failed:", error);
-        // Tu peux retourner ici une page d'erreur ou rien
-      })
-  );
-});
+//           return networkResponse;
+//         });
+//       })
+//       .catch(function (error) {
+//         console.error("Fetch failed:", error);
+//         // Tu peux retourner ici une page d'erreur ou rien
+//       })
+//   );
+// });
