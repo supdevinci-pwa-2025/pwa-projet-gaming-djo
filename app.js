@@ -71,7 +71,7 @@ displayPeople();
 navigator.serviceWorker.ready.then((reg) => {
   console.log("YEP");
   reg.sync
-    .register("sync-snacks") // indice: méthode pour enregistrer une sync
+    .register("sync-participants") // indice: méthode pour enregistrer une sync
     .then(() => console.log("📡 Sync enregistrée"))
     .catch((err) => console.error("❌ Erreur sync:", err));
 });

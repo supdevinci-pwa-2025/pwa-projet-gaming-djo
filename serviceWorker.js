@@ -70,9 +70,9 @@ self.addEventListener("fetch", (event) => {
 
 self.addEventListener("sync", (event) => {
   console.log("📡 Sync déclenchée pour:", event.tag);
-  if (event.tag === "sync-snacks") {
+  if (event.tag === "sync-participants") {
     // indice: le même tag que plus haut
-    event.waitUntil(syncSnacks()); // indice: dire "attends la fin de cette promesse"
+    event.waitUntil(syncParticipants()); // indice: dire "attends la fin de cette promesse"
   }
 });
 //  La fonction syncSnacks qui lit IndexedDB et envoie au serveur
