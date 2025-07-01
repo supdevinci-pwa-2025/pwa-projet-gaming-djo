@@ -27,9 +27,6 @@ function addPerson() {
   const newPerson = { name, role };
   people.push(newPerson);
   localStorage.setItem("gamingData", JSON.stringify(people));
-
-  savePendingParticipant(newPerson);
-
   nameInput.value = "";
   displayPeople();
 }
@@ -78,29 +75,3 @@ navigator.serviceWorker.ready.then((reg) => {
     .then(() => console.log("📡 Sync enregistrée"))
     .catch((err) => console.error("❌ Erreur sync:", err));
 });
-
-async function savePendingParticipant(participant) {
-  const db = await openDB();
-  const tx = db.transaction("pending-participants", "readwrite");
-  await tx.objectStore("pending-participants").add({
-    ...participant,
-    timestamp: Date.now(),
-  });
-}
-
-async function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open("gaming-db", 1);
-    req.onupgradeneeded = () => {
-      const db = req.result;
-      if (!db.objectStoreNames.contains("pending-participants")) {
-        db.createObjectStore("pending-participants", {
-          keyPath: "id",
-          autoIncrement: true,
-        });
-      }
-    };
-    req.onerror = () => reject(req.error);
-    req.onsuccess = () => resolve(req.result);
-  });
-}

@@ -67,8 +67,7 @@ async function syncParticipants() {
   console.log(" Début de la synchronisation...");
 
   // 1️⃣ Lire la liste des participants en attente
-  // const pending = await document.getElementById("peopleList"); // indice: fonction qui lit IndexedDB
-  const pending = await getAllPendingParticipants();
+  const pending = await displayPeople(); // indice: fonction qui lit IndexedDB
   console.log(`${pending.length} participant(s) à synchroniser`);
 
   let success = 0;
@@ -95,10 +94,8 @@ async function syncParticipants() {
       if (response.ok) {
         console.log(`✅ Participant synchronisé : ${participant.name}`);
 
-        // await removePerson(participant.id); // indice: supprime de IndexedDB
-        // await postMessage("participant-synced", { participant }); // indice: notifie les clients
-        await deletePendingParticipant(participant.id);
-        await notifyClients("participant-synced", participant);
+        await removePerson(participant.id); // indice: supprime de IndexedDB
+        await postMessage("participant-synced", { participant }); // indice: notifie les clients
         success++;
       } else {
         console.error(
@@ -116,55 +113,6 @@ async function syncParticipants() {
 
   // 3️⃣ Bilan final
   console.log(` ${success} participants synchronisés, ❌ ${fail} échecs`);
-}
-
-// 🔹 Récupérer tous les participants en attente
-function getAllPendingParticipants() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open("gaming-db", 1);
-    req.onerror = () => reject(req.error);
-    req.onupgradeneeded = () => {
-      const db = req.result;
-      if (!db.objectStoreNames.contains("pending-participants")) {
-        db.createObjectStore("pending-participants", {
-          keyPath: "id",
-          autoIncrement: true,
-        });
-      }
-    };
-    req.onsuccess = () => {
-      const db = req.result;
-      const tx = db.transaction("pending-participants", "readonly");
-      const store = tx.objectStore("pending-participants");
-      const getAllReq = store.getAll();
-      getAllReq.onsuccess = () => resolve(getAllReq.result);
-      getAllReq.onerror = () => reject(getAllReq.error);
-    };
-  });
-}
-
-// 🔹 Supprimer un participant
-function deletePendingParticipant(id) {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open("gaming-db", 1);
-    req.onerror = () => reject(req.error);
-    req.onsuccess = () => {
-      const db = req.result;
-      const tx = db.transaction("pending-participants", "readwrite");
-      const store = tx.objectStore("pending-participants");
-      const delReq = store.delete(id);
-      delReq.onsuccess = () => resolve();
-      delReq.onerror = () => reject(delReq.error);
-    };
-  });
-}
-
-// 🔹 Notifier les clients ouverts
-async function notifyClients(type, payload) {
-  const clients = await self.clients.matchAll();
-  for (const client of clients) {
-    client.postMessage({ type, payload });
-  }
 }
 
 // Écouter cet événement dans le SW (serviceWorker.js)
