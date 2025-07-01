@@ -63,42 +63,6 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(caches.match(request).then((res) => res || fetch(request)));
 });
 
-// Écouter cet événement dans le SW (serviceWorker.js)
-// Ton service worker sera réveillé même si la page est fermée, et fera la sync.
-
-//  Code à trous (dans serviceWorker.js)
-
-self.addEventListener("sync", (event) => {
-  console.log("📡 Sync déclenchée pour:", event.tag);
-  if (event.tag === "sync-participants") {
-    // indice: le même tag que plus haut
-    event.waitUntil(syncParticipants()); // indice: dire "attends la fin de cette promesse"
-  }
-});
-//  La fonction syncSnacks qui lit IndexedDB et envoie au serveur
-// Déjà écrite dans ton code :
-
-// elle utilise getAllPending() pour récupérer les snacks,
-
-// les POST au serveur,
-
-// puis supprime de IndexedDB après succès.
-
-// 🔍 Comment tester dans DevTools ?
-// Va dans :
-
-// Application > Service Workers
-// Clique sur « Sync », et mets ton tag :
-
-// sync-snacks
-// puis clique sur Trigger.
-
-// Dans la Console, tu dois voir :
-
-// Sync déclenchée pour: sync-snacks
-// Début de la synchronisation...
-// Tentative de synchro pour : ...
-
 async function syncParticipants() {
   console.log(" Début de la synchronisation...");
 
@@ -150,3 +114,39 @@ async function syncParticipants() {
   // 3️⃣ Bilan final
   console.log(` ${success} participants synchronisés, ❌ ${fail} échecs`);
 }
+
+// Écouter cet événement dans le SW (serviceWorker.js)
+// Ton service worker sera réveillé même si la page est fermée, et fera la sync.
+
+//  Code à trous (dans serviceWorker.js)
+
+self.addEventListener("sync", (event) => {
+  console.log("📡 Sync déclenchée pour:", event.tag);
+  if (event.tag === "sync-participants") {
+    // indice: le même tag que plus haut
+    event.waitUntil(syncParticipants()); // indice: dire "attends la fin de cette promesse"
+  }
+});
+//  La fonction syncSnacks qui lit IndexedDB et envoie au serveur
+// Déjà écrite dans ton code :
+
+// elle utilise getAllPending() pour récupérer les snacks,
+
+// les POST au serveur,
+
+// puis supprime de IndexedDB après succès.
+
+// 🔍 Comment tester dans DevTools ?
+// Va dans :
+
+// Application > Service Workers
+// Clique sur « Sync », et mets ton tag :
+
+// sync-snacks
+// puis clique sur Trigger.
+
+// Dans la Console, tu dois voir :
+
+// Sync déclenchée pour: sync-snacks
+// Début de la synchronisation...
+// Tentative de synchro pour : ...
