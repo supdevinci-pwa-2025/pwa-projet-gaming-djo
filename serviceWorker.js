@@ -53,7 +53,7 @@ self.addEventListener("fetch", (event) => {
   console.log("🛰 Fetch:", event.request.url);
 
   const request = event.request;
-  const url = event.url;
+  const url = new URL(request.url);
 
   console.log("🛰 Interception Fetch:", request.method, url.pathname);
 
