@@ -10,11 +10,31 @@ self.addEventListener("activate", function (event) {
   self.clients.claim(); // Prendre le contrôle des pages ouvertes
 });
 
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("gaming-db", 1); // version 1
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains("pending-gaming")) {
+        db.createObjectStore("pending-gaming", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+        console.log('📁 Object store "pending-gaming" créé');
+      }
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
 function getAllPending() {
   return openDB().then((db) => {
     return new Promise((resolve, reject) => {
-      const tx = db.transaction("pending-science", "readonly");
-      const store = tx.objectStore("pending-science");
+      const tx = db.transaction("pending-gaming", "readonly");
+      const store = tx.objectStore("pending-gaming");
       const req = store.getAll();
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
@@ -99,7 +119,7 @@ async function syncParticipants() {
         },
         body: JSON.stringify({
           name: participant.name, // indice: nom du participant
-          email: participant.role, // indice: email ou autre champ
+          email: participant.email, // indice: email ou autre champ
           timestamp: participant.timestamp, // indice: date ou identifiant temporel
         }),
       });
