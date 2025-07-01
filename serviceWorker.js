@@ -1,5 +1,5 @@
-var CACHE_NAME = "my-site-cache-v1";
-var urlsToCache = ["/", "/styles/main.[hash].css", "/script/main.[hash].js"];
+// var CACHE_NAME = "my-site-cache-v1";
+// var urlsToCache = ["/", "/styles/main.[hash].css", "/script/main.[hash].js"];
 
 // <!-- Écouter l'installation du SW -->
 self.addEventListener("install", function (event) {
