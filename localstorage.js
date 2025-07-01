@@ -9,4 +9,7 @@ const assets = [
   "./app.js",
   "./serviceWorker.js",
   "./netlify/functions/share.js",
+  "./manifest.json",
+  "./assets/manifest-icon-192.maskable.png",
+  "./assets/manifest-icon-512.maskable.png",
 ];
