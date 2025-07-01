@@ -48,23 +48,21 @@ self.addEventListener("activate", function (event) {
   );
 });
 
-// Intercepter les requêtes pour servir depuis le cache
 self.addEventListener("fetch", (event) => {
   console.log("🛰 Fetch:", event.request.url);
 
   const request = event.request;
-  const url = new URL(request.url);
+
+  // Toujours construire un objet URL depuis request.url
+  let url;
+  try {
+    url = new URL(request.url);
+  } catch (err) {
+    console.error("Erreur lors du parsing URL:", err);
+    return;
+  }
 
   console.log("🛰 Interception Fetch:", request.method, url.pathname);
 
-  // if(request.method === "POST" && url.pathname.includes('api/snack')) {
-  //   event.respondWith
-  // }
-
-  event.respondWith(
-    // indice: permet de renvoyer une réponse custom
-    caches
-      .match(event.request) // cherche dans le cache
-      .then((res) => res || fetch(event.request)) // si pas trouvé, va le chercher en ligne
-  );
+  event.respondWith(caches.match(request).then((res) => res || fetch(request)));
 });
