@@ -188,7 +188,6 @@ async function handleParticipantSubmission(request) {
       });
 
       const participantData = {
-        // id: Date.now().toString(),
         name: formData.get("name") || formData.get("participant"),
         role: formData.get("role") || formData.get("status"),
         timestamp: new Date().toISOString(),
