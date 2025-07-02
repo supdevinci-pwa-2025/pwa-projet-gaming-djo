@@ -388,23 +388,22 @@ self.addEventListener("push", (event) => {
  * - une URL adaptée pour Netlify (fonctions serverless),
  * - une URL de production par défaut.
  */
-function getApiUrl() {
-  // Création d'un objet URL pour analyser proprement l'URL courante
-  const currentUrl = new URL(self.location.href);
-  // Si on est en local (dev sur machine locale)
-  if (
-    currentUrl.hostname === "localhost" ||
-    currentUrl.hostname === "127.0.0.1"
-  ) {
-    // Retourne l'URL locale pour l'API, sur le même port que le front-end
-    return `${currentUrl.origin}/api/participant`;
-  }
-  // Si on est déployé sur Netlify (URL contenant "netlify.app")
-  if (currentUrl.hostname.includes("netlify.app")) {
-    // Retourne l'URL de la fonction serverless hébergée sur Netlify
-    console.log(currentUrl.origin + "GUIFSGFIU");
-    return `${currentUrl.origin}/.netlify/functions/participant`;
-  }
-  // Sinon on retourne une URL de production fixe (exemple : site Netlify principal)
-  return "https://gmaing.netlify.app/.netlify/functions/participant";
-}
+// function getApiUrl() {
+//   // Création d'un objet URL pour analyser proprement l'URL courante
+//   const currentUrl = new URL(self.location.href);
+//   // Si on est en local (dev sur machine locale)
+//   if (
+//     currentUrl.hostname === "localhost" ||
+//     currentUrl.hostname === "127.0.0.1"
+//   ) {
+//     // Retourne l'URL locale pour l'API, sur le même port que le front-end
+//     return `${currentUrl.origin}/api/participant`;
+//   }
+//   // Si on est déployé sur Netlify (URL contenant "netlify.app")
+//   if (currentUrl.hostname.includes("netlify.app")) {
+//     // Retourne l'URL de la fonction serverless hébergée sur Netlify
+//     return `${currentUrl.origin}/.netlify/functions/participant`;
+//   }
+//   // Sinon on retourne une URL de production fixe (exemple : site Netlify principal)
+//   return "https://gmaing.netlify.app/.netlify/functions/participant";
+// }
