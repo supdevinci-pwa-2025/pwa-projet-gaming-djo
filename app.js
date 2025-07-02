@@ -45,7 +45,16 @@ function setupForm() {
         body: formData,
       });
 
-      const result = await response.json();
+      let result = {};
+      let text = await response.text();
+
+      try {
+        result = text ? JSON.parse(text) : {};
+      } catch (e) {
+        console.error("❌ Erreur parsing JSON:", e);
+        result = {};
+      }
+
       console.log("✅ Réponse:", result);
 
       if (result.offline) {
