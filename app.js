@@ -39,7 +39,7 @@ function setupForm() {
       formData.append("name", name);
       formData.append("role", role);
 
-      console.log(formData);
+      console.log(formData.getAll);
 
       // Envoyer vers l'API (intercepté par le SW si hors ligne)
       const response = await fetch("/api/participant", {
