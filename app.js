@@ -50,6 +50,11 @@ function setupForm() {
 
       if (result.offline) {
         showMessage("📱 Participant sauvegardé hors ligne !", "warning");
+        participants.push({
+          name,
+          role,
+        });
+        backupToLocalStorage();
       } else {
         showMessage("✅ Participant ajouté avec succès !", "success");
         // Ajouter à la liste locale immédiatement
