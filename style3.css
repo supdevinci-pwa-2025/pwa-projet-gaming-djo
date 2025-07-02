@@ -1,0 +1,630 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+    min-height: 100vh;
+    color: #2d3748;
+    padding: 20px;
+    padding-bottom: 80px; /* Space for tabbar */
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+            radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Tabbar Navigation */
+.tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.8);
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    z-index: 100;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.tabbar a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    text-decoration: none;
+    background: rgba(59, 130, 246, 0.1);
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tabbar a:hover,
+.tabbar a:focus {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
+}
+
+/* Header */
+h1 {
+    text-align: center;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcf7f, #4d9de0);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease-in-out infinite;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Form Section */
+#participant-form {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 10;
+    overflow: visible;
+}
+
+#participant-form::before {
+    content: '✨ Ajouter un participant';
+    display: block;
+    color: #374151;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+#participant-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Form Layout */
+#participant-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+#participant-form > * {
+    grid-column: 1;
+}
+
+#participant-form input,
+#participant-form .role-selector,
+#participant-form button {
+    margin: 8px 0;
+}
+
+@media (min-width: 768px) {
+    #participant-form {
+        grid-template-columns: 2fr 1fr auto;
+        grid-template-areas:
+      "title title title"
+      "input role button";
+        align-items: end;
+    }
+
+    #participant-form::before {
+        grid-area: title;
+        margin-bottom: 16px;
+    }
+
+    #participant-form input {
+        grid-area: input;
+    }
+
+    #participant-form .role-selector {
+        grid-area: role;
+    }
+
+    #participant-form button {
+        grid-area: button;
+    }
+}
+
+/* Input Styles */
+input[type="text"] {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.8);
+    color: #374151;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+input[type="text"]::placeholder {
+    color: #9ca3af;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Custom Role Selector */
+.role-selector {
+    position: relative;
+    width: 100%;
+    z-index: 1000;
+}
+
+.role-selector-button {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.8);
+    color: #374151;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.role-selector-button:hover,
+.role-selector-button:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
+}
+
+.role-selector-button .role-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.role-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.role-icon.en-attente {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.role-icon.qualifie {
+    background: linear-gradient(135deg, #10b981, #047857);
+    color: white;
+}
+
+.role-icon.elimine {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.role-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    z-index: 99999;
+    margin-top: 8px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.role-dropdown.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.role-option {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.role-option:last-child {
+    border-bottom: none;
+}
+
+.role-option:hover {
+    background: rgba(59, 130, 246, 0.1);
+    transform: translateX(4px);
+}
+
+.role-option.selected {
+    background: rgba(59, 130, 246, 0.15);
+    color: #1d4ed8;
+    font-weight: 600;
+}
+
+/* Button Styles */
+button {
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+}
+
+button:active {
+    transform: translateY(-1px);
+}
+
+/* File Upload Section */
+.file-section {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+
+.file-section:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.75);
+}
+
+input[type="file"] {
+    padding: 12px;
+    border: 2px dashed #3b82f6;
+    border-radius: 12px;
+    background: rgba(59, 130, 246, 0.05);
+    color: #374151;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+}
+
+input[type="file"]:hover {
+    border-color: #1d4ed8;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+/* Participants List */
+#participant-list {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    list-style: none;
+    min-height: 120px;
+}
+
+#participant-list::before {
+    content: '🎯 Liste des participants';
+    display: block;
+    color: #374151;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+#participant-list:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Participant Item */
+.participant-item {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.5s ease-out;
+}
+
+.participant-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border-radius: 2px;
+}
+
+.participant-item:hover {
+    transform: translateX(8px);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.participant-item span {
+    color: #374151;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.participant-item span::before {
+    content: '';
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.participant-item button {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #dc2626;
+    padding: 8px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    min-width: auto;
+    width: auto;
+}
+
+.participant-item button:hover {
+    background: rgba(239, 68, 68, 0.25);
+    transform: scale(1.1);
+    box-shadow: none;
+}
+
+/* Additional Lists */
+#participants {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    list-style: none;
+    min-height: 80px;
+}
+
+#participants:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.75);
+}
+
+#participants li {
+    padding: 12px 16px;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    color: #374151;
+    font-weight: 500;
+    border-left: 4px solid #3b82f6;
+}
+
+/* Test Button */
+button[onclick*="testBackgroundSync"] {
+    background: linear-gradient(135deg, #10b981, #047857);
+    margin: 16px auto 0;
+    display: block;
+}
+
+button[onclick*="testBackgroundSync"]:hover {
+    box-shadow: 0 12px 40px rgba(16, 185, 129, 0.4);
+}
+
+/* Empty States */
+#participant-list:empty::after {
+    content: '🎮 Aucun participant pour le moment\AAAjoutez votre premier joueur pour commencer le tournoi !';
+    white-space: pre-line;
+    display: block;
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7280;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#participants:empty::after {
+    content: '📄 Aucun fichier CSV chargé';
+    display: block;
+    text-align: center;
+    padding: 20px;
+    color: #6b7280;
+    font-style: italic;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    z-index: 1001;
+    animation: slideInRight 0.3s ease-out;
+    max-width: 400px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #10b981, #047857);
+}
+
+.notification.warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.notification.info {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+        padding-bottom: 80px;
+    }
+
+    #participant-form,
+    #participant-list {
+        padding: 24px;
+    }
+
+    .participant-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .participant-item span {
+        justify-content: center;
+    }
+
+    .tabbar {
+        padding: 12px 16px;
+        gap: 20px;
+    }
+
+    .tabbar a {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+
+    .file-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    input[type="file"] {
+        max-width: 100%;
+    }
+}
