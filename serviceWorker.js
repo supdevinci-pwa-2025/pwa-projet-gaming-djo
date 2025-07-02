@@ -232,7 +232,7 @@ self.addEventListener("fetch", (event) => {
 
   if (
     request.method === "POST" &&
-    (url.pathname.includes("/api/participants") ||
+    (url.pathname.includes("/api/participant") ||
       url.pathname.includes("/.netlify/functions/participant"))
   ) {
     event.respondWith(handleParticipantSubmission(request));
