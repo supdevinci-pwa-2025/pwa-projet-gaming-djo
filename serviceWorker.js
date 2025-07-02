@@ -336,6 +336,7 @@ async function syncParticipants() {
 
   for (const participant of pending) {
     try {
+      console.log(participant);
       const response = await fetch(
         "https://gmaing.netlify.app/functions/participant",
         {
@@ -351,7 +352,8 @@ async function syncParticipants() {
           }),
         }
       );
-
+      console.log("OK MAN");
+      console.log(response);
       if (response.ok) {
         await deletePendingParticipant(participant.id);
         await notifyClients("participant-synced", participant);
