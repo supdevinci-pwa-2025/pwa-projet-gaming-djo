@@ -199,7 +199,7 @@
       media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
     />
   </head>
-  <body>
+  <!-- <body>
     <h1>🎮 Tournoi Gaming</h1>
     <section id="formSection">
       <h2>Ajouter un participant</h2>
@@ -220,5 +220,44 @@
     </section>
     <section id="peopleList"></section>
     <script src="app.js"></script>
+  </body> -->
+  <body>
+    <nav class="tabbar">
+      <a href="index.html">🏠</a>
+      <a href="random.html">😊</a>
+    </nav>
+
+    <h1>🎮 Tournoi Gaming</h1>
+    <form id="participant-form">
+      <input
+        type="text"
+        id="participant-name"
+        placeholder="Nom du participant"
+        required=""
+      />
+      <input
+        type="text"
+        id="participant-role"
+        placeholder="Ton role"
+        required=""
+      />
+      <button type="submit">Ajouter</button>
+    </form>
+    <ul id="participant-list"></ul>
+
+    <input type="file" id="csvFile" accept=".csv" />
+    <button onclick="readCSV()">Charger la liste</button>
+    <ul id="participants"></ul>
+    <button onclick="testBackgroundSync()">Tester Background Sync</button>
+    <!-- TON CODE APP -->
+    <script type="module" src="app.js"></script>
+
+    <!-- TON CODE POUR /open -->
+    <script>
+      if (location.pathname === "/open") {
+        alert("🗂️ Tu as ouvert un fichier CSV !");
+      }
+    </script>
+    <script src="push-notifications.js" defer></script>
   </body>
 </html>
