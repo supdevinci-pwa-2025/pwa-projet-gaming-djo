@@ -44,7 +44,7 @@
   ],
   "screenshots": [
     {
-      "src": "assets/screenshot.png",
+      "src": "/screenshots/screenshot.png",
       "sizes": "1920x490",
       "type": "image/png"
     }
