@@ -508,7 +508,7 @@ input[type="file"]:hover {
 /* Test Button */
 button[onclick*="testBackgroundSync"] {
     background: linear-gradient(135deg, #10b981, #047857);
-    margin: 16px auto 0;
+    margin: 16px auto 40px;
     display: block;
 }
 
