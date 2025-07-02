@@ -203,7 +203,6 @@ function addPerson() {
   displayPeople();
 }
 
-/*
 // let people = JSON.parse(localStorage.getItem("gamingData")) || [];
 
 function displayPeople() {
@@ -250,4 +249,3 @@ navigator.serviceWorker.ready.then((reg) => {
     .then(() => console.log("📡 Sync enregistrée"))
     .catch((err) => console.error("❌ Erreur sync:", err));
 });
-*/
