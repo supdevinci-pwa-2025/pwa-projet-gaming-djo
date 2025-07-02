@@ -106,6 +106,10 @@ function setupServiceWorkerListener() {
 
         case "participant-synced":
           console.log("🔄 Participant synchronisé:", data);
+          participants.push({
+            name: data.name,
+            role: data.role,
+          });
           showMessage(`🔄 ${data.name} synchronisé !`, "success");
           break;
       }
