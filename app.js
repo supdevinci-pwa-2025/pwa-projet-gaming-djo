@@ -185,9 +185,6 @@ function backupToLocalStorage() {
 // Sauvegarder toutes les 30 secondes
 setInterval(backupToLocalStorage, 30000);
 
-/*
-// let people = JSON.parse(localStorage.getItem("gamingData")) || [];
-
 function addPerson() {
   const nameInput = document.getElementById("personName");
   const roleInput = document.getElementById("personRole");
@@ -205,6 +202,9 @@ function addPerson() {
   nameInput.value = "";
   displayPeople();
 }
+
+/*
+// let people = JSON.parse(localStorage.getItem("gamingData")) || [];
 
 function displayPeople() {
   const list = document.getElementById("peopleList");
