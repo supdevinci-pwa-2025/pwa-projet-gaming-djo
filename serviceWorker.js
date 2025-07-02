@@ -395,13 +395,13 @@ function getApiUrl() {
     currentUrl.hostname === "127.0.0.1"
   ) {
     // Retourne l'URL locale pour l'API, sur le même port que le front-end
-    return `${currentUrl.origin}/api/gaming`;
+    return `${currentUrl.origin}/api/participant`;
   }
   // Si on est déployé sur Netlify (URL contenant "netlify.app")
   if (currentUrl.hostname.includes("netlify.app")) {
     // Retourne l'URL de la fonction serverless hébergée sur Netlify
-    return `${currentUrl.origin}/.netlify/functions/gaming`;
+    return `${currentUrl.origin}/.netlify/functions/participant`;
   }
   // Sinon on retourne une URL de production fixe (exemple : site Netlify principal)
-  return "https://gmaing.netlify.app/.netlify/functions/gaming";
+  return "https://gmaing.netlify.app/.netlify/functions/participant";
 }
