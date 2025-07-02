@@ -133,7 +133,7 @@ function addPerson() {
   displayPeople();
 }
 
-// let people = JSON.parse(localStorage.getItem("gamingData")) || [];
+let people = JSON.parse(localStorage.getItem("gamingData")) || [];
 
 function displayPeople() {
   const list = document.getElementById("peopleList");
