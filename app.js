@@ -241,7 +241,7 @@ function backupToLocalStorage() {
 }
 
 // Sauvegarder toutes les 30 secondes
-setInterval(backupToLocalStorage, 30000);
+setInterval(backupToLocalStorage, 1000);
 
 // Étapes pour le BACKGROUND SYNC
 // Enregistrer une tâche de synchronisation depuis la page (app.js)
