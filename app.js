@@ -114,7 +114,7 @@ async function loadParticipants() {
     addParticipantToUI(participant.name, participant.role)
   );
 }
-
+/*
 function addPerson() {
   const nameInput = document.getElementById("personName");
   const roleInput = document.getElementById("personRole");
@@ -163,7 +163,7 @@ function removePerson(index) {
 }
 
 displayPeople();
-
+*/
 // ============ AFFICHAGE UI ============
 function addParticipantToUI(name, role) {
   const li = document.createElement("li");
@@ -241,7 +241,7 @@ setInterval(backupToLocalStorage, 30000);
 // « Dès que possible, déclenche un background sync avec le tag sync-participants ».
 
 // Code à trous (dans app.js)
-
+/*
 navigator.serviceWorker.ready.then((reg) => {
   console.log("YEP");
   reg.sync
@@ -249,3 +249,4 @@ navigator.serviceWorker.ready.then((reg) => {
     .then(() => console.log("📡 Sync enregistrée"))
     .catch((err) => console.error("❌ Erreur sync:", err));
 });
+*/
