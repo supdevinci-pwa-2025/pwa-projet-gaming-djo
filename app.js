@@ -6,10 +6,10 @@ if ("serviceWorker" in navigator) {
     .catch((err) => console.error("❌ SW non enregistré:", err));
 }
 
-const participantsList = document.querySelector("#snack-list");
+const participantsList = document.querySelector("#participant-list");
 let participants = [];
 
-// Charger les snacks au démarrage
+// Charger les participants au démarrage
 document.addEventListener("DOMContentLoaded", async () => {
   await loadParticipants();
   setupForm();
@@ -37,7 +37,7 @@ function setupForm() {
       // Créer FormData pour l'envoi
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("mood", role);
+      formData.append("role", role);
 
       // Envoyer vers l'API (intercepté par le SW si hors ligne)
       const response = await fetch("/api/participant", {
@@ -88,7 +88,7 @@ function setupServiceWorkerListener() {
   }
 }
 
-// ============ CHARGEMENT DES SNACKS ============
+// ============ CHARGEMENT DES PARTICIPANTS ============
 async function loadParticipants() {
   try {
     // Essayer de charger depuis l'API
@@ -109,7 +109,7 @@ async function loadParticipants() {
     participants = JSON.parse(localStorage.getItem("participants")) || [];
   }
 
-  // Afficher les snacks
+  // Afficher les participants
   participants.forEach((participant) =>
     addParticipantToUI(participant.name, participant.role)
   );
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       try {
         const registration = await navigator.serviceWorker.ready;
-        await registration.sync.register("sync-snacks");
+        await registration.sync.register("sync-participants");
         console.log("🔄 Background sync déclenché manuellement");
         showMessage("🔄 Synchronisation déclenchée", "info");
       } catch (error) {
@@ -238,7 +238,7 @@ setInterval(backupToLocalStorage, 30000);
 // Enregistrer une tâche de synchronisation depuis la page (app.js)
 // Après avoir enregistré ton service worker, tu peux dire :
 
-// « Dès que possible, déclenche un background sync avec le tag sync-snacks ».
+// « Dès que possible, déclenche un background sync avec le tag sync-participants ».
 
 // Code à trous (dans app.js)
 

@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
           <!DOCTYPE html>
           <html>
           <head>
-            <title>Fichier reçu - Snack'n'Track</title>
+            <title>Fichier reçu - Participants'n'Track</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <style>
               body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
@@ -41,7 +41,7 @@ exports.handler = async (event, context) => {
           </head>
           <body>
             <h1 class="success">✅ Fichier reçu !</h1>
-            <p>Votre fichier a été partagé avec succès vers Snack'n'Track</p>
+            <p>Votre fichier a été partagé avec succès vers Participant'n'Track</p>
             <a href="/index.html" class="btn">Retour à l'app</a>
             <script>
               // Optionnel : rediriger automatiquement après 3 secondes
@@ -66,7 +66,7 @@ exports.handler = async (event, context) => {
           <!DOCTYPE html>
           <html>
           <head>
-            <title>Contenu partagé - Snack'n'Track</title>
+            <title>Contenu partagé - Participant'n'Track</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <style>
               body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
@@ -76,7 +76,7 @@ exports.handler = async (event, context) => {
           </head>
           <body>
             <h1 class="success">✅ Contenu partagé !</h1>
-            <p>Le contenu a été partagé avec succès vers Snack'n'Track</p>
+            <p>Le contenu a été partagé avec succès vers Participant'n'Track</p>
             <a href="/index.html" class="btn">Retour à l'app</a>
           </body>
           </html>
