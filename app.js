@@ -59,6 +59,7 @@ function setupForm() {
           name,
           role,
         });
+        backupToLocalStorage();
       }
 
       form.reset();
@@ -86,6 +87,7 @@ function setupServiceWorkerListener() {
             name: data.name,
             role: data.role,
           });
+          backupToLocalStorage();
           break;
 
         case "participant-synced":
