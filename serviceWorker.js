@@ -338,7 +338,7 @@ async function syncParticipants() {
     try {
       console.log(participant);
       const response = await fetch(
-        "https://gmaing.netlify.app/functions/participant",
+        "https://gmaing.netlify.app/.netlify/functions/participant",
         {
           method: "POST",
           headers: {
@@ -405,5 +405,5 @@ function getApiUrl() {
     return `${currentUrl.origin}/.netlify/functions/participant`;
   }
   // Sinon on retourne une URL de production fixe (exemple : site Netlify principal)
-  return "https://gmaing.netlify.app/functions/participant";
+  return "https://gmaing.netlify.app/.netlify/functions/participant";
 }
