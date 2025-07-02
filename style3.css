@@ -518,7 +518,7 @@ button[onclick*="testBackgroundSync"]:hover {
 
 /* Empty States */
 #participant-list:empty::after {
-    content: '🎮 Aucun participant pour le moment\AAAjoutez votre premier joueur pour commencer le tournoi !';
+    content: '🎮 Aucun participant pour le moment. Ajoutez votre premier joueur pour commencer le tournoi !';
     white-space: pre-line;
     display: block;
     text-align: center;
