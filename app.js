@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============ SAUVEGARDE DE SECOURS ============
 // Sauvegarder périodiquement dans localStorage comme backup
 function backupToLocalStorage() {
-  localStorage.setItem("participants", JSON.stringify(participantsList));
+  localStorage.setItem("participants", JSON.stringify(participants));
 }
 
 // Sauvegarder toutes les 30 secondes
