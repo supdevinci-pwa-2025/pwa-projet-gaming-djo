@@ -402,6 +402,7 @@ function getApiUrl() {
   // Si on est déployé sur Netlify (URL contenant "netlify.app")
   if (currentUrl.hostname.includes("netlify.app")) {
     // Retourne l'URL de la fonction serverless hébergée sur Netlify
+    console.log(currentUrl.origin + "GUIFSGFIU");
     return `${currentUrl.origin}/.netlify/functions/participant`;
   }
   // Sinon on retourne une URL de production fixe (exemple : site Netlify principal)
