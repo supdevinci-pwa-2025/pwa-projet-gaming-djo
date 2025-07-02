@@ -42,6 +42,13 @@
       "purpose": "maskable"
     }
   ],
+  "screenshots": [
+    {
+      "src": "assets/screenshot.png",
+      "sizes": "1920x490",
+      "type": "image/png"
+    }
+  ],
   "file_handlers": [
     {
       "action": "/open.html",
