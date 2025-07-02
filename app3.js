@@ -106,7 +106,7 @@ function setupForm() {
       //     offline: true,
       //   });
       //   backupToLocalStorage();
-      addParticipantToUI(name, role);
+      //   addParticipantToUI(name, role);
 
       showMessage("📱 Sauvegardé hors ligne", "warning");
 
@@ -245,7 +245,7 @@ function setupServiceWorkerListener() {
       switch (type) {
         case "participant-saved-offline":
           console.log("📱 Participant sauvegardé hors ligne:", data);
-          addParticipantToUI(data.name, data.role);
+          //   addParticipantToUI(data.name, data.role);
           showMessage(`📱 ${data.name} sauvegardé hors ligne`, "warning");
           break;
 
