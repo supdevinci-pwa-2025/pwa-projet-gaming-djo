@@ -54,6 +54,11 @@ function setupForm() {
         showMessage("✅ Participant ajouté avec succès !", "success");
         // Ajouter à la liste locale immédiatement
         addParticipantToUI(name, role);
+
+        participants.push({
+          name,
+          role,
+        });
       }
 
       form.reset();
@@ -77,6 +82,10 @@ function setupServiceWorkerListener() {
           console.log("📱 Participant sauvegardé hors ligne:", data);
           addParticipantToUI(data.name, data.role);
           showMessage(`📱 ${data.name} sauvegardé hors ligne`, "warning");
+          participants.push({
+            name: data.name,
+            role: data.role,
+          });
           break;
 
         case "participant-synced":
