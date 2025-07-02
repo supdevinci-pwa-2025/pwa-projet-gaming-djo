@@ -270,7 +270,7 @@ async function loadParticipants() {
   try {
     // Essayer de charger depuis l'API
     const response = await fetch(
-      "https://gmaing.netlify.app/.netlify/functions/get-participants"
+      "https://gmaing.netlify.app/.netlify/functions/participant"
     );
 
     if (response.ok) {
