@@ -79,13 +79,6 @@ function setupForm() {
 
       if (result.offline) {
         showMessage("📱 Participant sauvegardé hors ligne !", "warning");
-        // participants.push({
-        //     id: Date.now(),
-        //     name,
-        //     role,
-        //     offline: true
-        // });
-        // backupToLocalStorage();
         addParticipantToUI(name, role);
       } else {
         showMessage("✅ Participant ajouté avec succès !", "success");
@@ -106,13 +99,13 @@ function setupForm() {
       console.error("❌ Erreur soumission:", error);
 
       // Mode fallback hors ligne
-      participants.push({
-        id: Date.now(),
-        name,
-        role,
-        offline: true,
-      });
-      backupToLocalStorage();
+      //   participants.push({
+      //     id: Date.now(),
+      //     name,
+      //     role,
+      //     offline: true,
+      //   });
+      //   backupToLocalStorage();
       addParticipantToUI(name, role);
 
       showMessage("📱 Sauvegardé hors ligne", "warning");
